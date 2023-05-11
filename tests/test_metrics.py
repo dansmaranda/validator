@@ -1,8 +1,9 @@
 import numpy as np
 import pytest
+from numpy.random import MT19937, Generator
+
 from validator.metrics import apply_binary_thresholds
 
-from numpy.random import Generator, MT19937
 rng = Generator(MT19937(seed=123456789))
 
 
@@ -16,10 +17,8 @@ rng = Generator(MT19937(seed=123456789))
         )
     ],
 )
-
-
 def test_apply_binary_thresholds(rnd_prob_arr, thresholds, expected_binary_counts):
     binaries_probs = apply_binary_thresholds(rnd_prob_arr, thresholds)
-    
+
     for binary_prob, expected_count in zip(binaries_probs, expected_binary_counts):
         assert np.sum(binary_prob) == expected_count

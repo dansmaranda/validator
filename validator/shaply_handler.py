@@ -7,14 +7,13 @@ import shap
 import xgboost as xgb
 
 from validator.plotting.plotting import MisterPlotter
-
-from numba.core.errors import NumbaDeprecationWarning, NumbaPendingDeprecationWarning
+from numba.core.errors import (NumbaDeprecationWarning, 
+                                    NumbaPendingDeprecationWarning,
+                                    NumbaPerformanceWarning)
 import warnings
-
 warnings.simplefilter('ignore', category=NumbaDeprecationWarning)
 warnings.simplefilter('ignore', category=NumbaPendingDeprecationWarning)
-
-
+warnings.simplefilter('ignore', category=NumbaPerformanceWarning)
 # TODO: Add show argument
 class XGShapBoy:
     def __init__(

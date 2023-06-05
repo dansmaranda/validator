@@ -10,13 +10,14 @@ python = ">=3.9,<3.12"
 pylint = "^2.17.2"
 black = "^23.3.0"
 isort = "^5.12.0"
-numpy = "<1.24.0"
+numpy = "^1.24.0"
+# numpy = "<1.24.0"
 pytest = "^7.3.0"
 scipy = "^1.10.1"
 matplotlib = "^3.7.1"
 shap = "^0.41.0"
 ipython = "^8.13.1"
-loggerino = {path = "/Users/dan.smaranda/Documents/pyproj/loggerino", develop = true}
+loggerino = {path = "../loggerino", develop = true}
 
 
 [tool.poetry.group.dev.dependencies]

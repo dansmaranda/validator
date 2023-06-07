@@ -7,6 +7,7 @@ import numpy as np
 
 from validator.utils import get_cache_dir
 
+from loggerino import LOGGERINO
 
 class MisterPlotter:
     def __init__(
@@ -68,6 +69,22 @@ class MisterPlotter:
     def _gen_subplot_title(self, row, col):
         return f"Subplot - {row}{col}"
 
+    def plot_hist(
+        self, row, col, x_data, subplot_title="", x_label="", y_label="", show=False, **kwargs
+    ) -> None:
+        plotting_func = self.sub_figures_axes[row][col].hist
+
+        self._plot_generic(
+            row,
+            col,
+            x_data,
+            y_data=None,
+            x_label=x_label,
+            y_label=y_label,
+            plotting_func=plotting_func,
+            subplot_title=subplot_title,
+            **kwargs,
+        )
     def plot_scatter(
         self, row, col, x_data, y_data, subplot_title="", x_label="", y_label="", show=False, **kwargs
     ) -> None:
@@ -108,7 +125,11 @@ class MisterPlotter:
     ) -> None:
         curr_fig = self.sub_figures[row][col]
         curr_ax = self.sub_figures_axes[row][col]
-        plotting_func(x_data, y_data, **kwargs)
+        
+        if y_data is None:
+            plotting_func(x_data, **kwargs)
+        else:
+            plotting_func(x_data, y_data, **kwargs)
 
         if subplot_title == "":
             subplot_title = self._gen_subplot_title(row=row, col=col)
@@ -138,6 +159,8 @@ class MisterPlotter:
         save_path = save_dir / f"{descriptor}.{extension}"
 
         self.fig.savefig(str(save_path))
+        
+        LOGGERINO.info("💾  Saved plot at %s", save_path)
 
 
 if __name__ == "__main__":

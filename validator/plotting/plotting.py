@@ -4,10 +4,10 @@ from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
+from loggerino import LOGGERINO
 
 from validator.utils import get_cache_dir
 
-from loggerino import LOGGERINO
 
 class MisterPlotter:
     def __init__(
@@ -24,21 +24,19 @@ class MisterPlotter:
             sqrt_float = np.sqrt(nb_plots)
             padding = 1 if sqrt_float % 1 > 0.0 else 0
             subfig_cols = int(sqrt_float) + padding
-            
-            empty_rows =  (subfig_cols * subfig_cols - nb_plots) // subfig_cols
-            subfig_rows = subfig_cols - empty_rows
-            
-            
-        elif subfig_rows < 0 or subfig_cols < 0:
-            raise ValueError("❌ Need to pass either number of plots or positive values for rows and columns")
-        
 
-        
+            empty_rows = (subfig_cols * subfig_cols - nb_plots) // subfig_cols
+            subfig_rows = subfig_cols - empty_rows
+
+        elif subfig_rows < 0 or subfig_cols < 0:
+            raise ValueError(
+                "❌ Need to pass either number of plots or positive values for rows and columns"
+            )
+
         self.save_path = None
         self.nrows = subfig_rows
         self.ncols = subfig_cols
         self.timestamp = None
-        
 
         kwargs = {}
         if isinstance(width_ratios, list):
@@ -55,22 +53,28 @@ class MisterPlotter:
 
         if subfig_rows == subfig_cols == 1:
             self.sub_figures = [[self.sub_figures]]
-        
+
         elif subfig_rows == 1 or subfig_cols == 1:
             self.sub_figures = [self.sub_figures]
-          
 
         self.sub_figures_axes = [[[] for _ in rows] for rows in self.sub_figures]
         for row, figure_row in enumerate(self.sub_figures):
             for column, figure in enumerate(figure_row):
                 self.sub_figures_axes[row][column] = figure.subplots(1, 1)
 
-
     def _gen_subplot_title(self, row, col):
         return f"Subplot - {row}{col}"
 
     def plot_hist(
-        self, row, col, x_data, subplot_title="", x_label="", y_label="", show=False, **kwargs
+        self,
+        row,
+        col,
+        x_data,
+        subplot_title="",
+        x_label="",
+        y_label="",
+        show=False,
+        **kwargs,
     ) -> None:
         plotting_func = self.sub_figures_axes[row][col].hist
 
@@ -85,8 +89,18 @@ class MisterPlotter:
             subplot_title=subplot_title,
             **kwargs,
         )
+
     def plot_scatter(
-        self, row, col, x_data, y_data, subplot_title="", x_label="", y_label="", show=False, **kwargs
+        self,
+        row,
+        col,
+        x_data,
+        y_data,
+        subplot_title="",
+        x_label="",
+        y_label="",
+        show=False,
+        **kwargs,
     ) -> None:
         plotting_func = self.sub_figures_axes[row][col].scatter
 
@@ -103,9 +117,17 @@ class MisterPlotter:
         )
 
     def plot_line(
-        self, row, col, x_data, y_data, subplot_title="", show=False, x_label="", y_label="", **kwargs
+        self,
+        row,
+        col,
+        x_data,
+        y_data,
+        subplot_title="",
+        show=False,
+        x_label="",
+        y_label="",
+        **kwargs,
     ) -> None:
-
         plotting_func = self.sub_figures_axes[row][col].plot
 
         self._plot_generic(
@@ -121,11 +143,20 @@ class MisterPlotter:
         )
 
     def _plot_generic(
-        self, row, col, x_data, y_data, plotting_func, subplot_title="", x_label="", y_label="", **kwargs
+        self,
+        row,
+        col,
+        x_data,
+        y_data,
+        plotting_func,
+        subplot_title="",
+        x_label="",
+        y_label="",
+        **kwargs,
     ) -> None:
         curr_fig = self.sub_figures[row][col]
         curr_ax = self.sub_figures_axes[row][col]
-        
+
         if y_data is None:
             plotting_func(x_data, **kwargs)
         else:
@@ -138,7 +169,7 @@ class MisterPlotter:
             curr_ax.set_xlabel(x_label)
         if y_label:
             curr_ax.set_ylabel(y_label)
-            
+
         curr_fig.suptitle(subplot_title)
 
     def save(
@@ -159,7 +190,7 @@ class MisterPlotter:
         save_path = save_dir / f"{descriptor}.{extension}"
 
         self.fig.savefig(str(save_path))
-        
+
         LOGGERINO.info("💾  Saved plot at %s", save_path)
 
 

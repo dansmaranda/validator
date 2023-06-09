@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "validator"
-version = "0.1.2"
+version = "0.1.3"
 description = ""
 authors = ["Dumitru Dan Smaranda <dan.smaranda@uni.lu>"]
 readme = "README.md"

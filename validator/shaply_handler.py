@@ -1,3 +1,4 @@
+import warnings
 from pathlib import Path
 from typing import Any
 
@@ -5,15 +6,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 import shap
 import xgboost as xgb
+from numba.core.errors import (NumbaDeprecationWarning,
+                               NumbaPendingDeprecationWarning,
+                               NumbaPerformanceWarning)
 
 from validator.plotting.plotting import MisterPlotter
-from numba.core.errors import (NumbaDeprecationWarning, 
-                                    NumbaPendingDeprecationWarning,
-                                    NumbaPerformanceWarning)
-import warnings
-warnings.simplefilter('ignore', category=NumbaDeprecationWarning)
-warnings.simplefilter('ignore', category=NumbaPendingDeprecationWarning)
-warnings.simplefilter('ignore', category=NumbaPerformanceWarning)
+
+warnings.simplefilter("ignore", category=NumbaDeprecationWarning)
+warnings.simplefilter("ignore", category=NumbaPendingDeprecationWarning)
+warnings.simplefilter("ignore", category=NumbaPerformanceWarning)
+
+
 # TODO: Add show argument
 class XGShapBoy:
     def __init__(
@@ -96,7 +99,9 @@ class XGShapBoy:
         mp_internal = self._gen_internal_plotter()
         self._set_current_axis(mp_internal.sub_figures_axes[0][0])
 
-        plot = shap.summary_plot(shap_values, data, **plot_kwargs, show=self.show_plot, **kwargs)
+        plot = shap.summary_plot(
+            shap_values, data, **plot_kwargs, show=self.show_plot, **kwargs
+        )
 
         if self.show_plot is False:
             self.save_plot(mp_internal, descriptor=descriptor)
@@ -125,4 +130,3 @@ class XGShapBoy:
             self.save_plot(plotting_handler=mp_internal, descriptor=descriptor)
 
         return plot
-

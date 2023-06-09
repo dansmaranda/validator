@@ -1,9 +1,7 @@
-
-import xgboost as xgb
 import shap
+import xgboost as xgb
 
 from validator.shaply_handler import XGShapBoy
-
 
 
 def test_shap_xgb_no_clustering():
@@ -21,7 +19,6 @@ def test_shap_xgb_no_clustering():
         ],
     ):
         X, y = dataset
-
 
         model.fit(X, y)
         data_sample = X[:100]

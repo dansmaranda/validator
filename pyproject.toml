@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "validator"
-version = "0.1.3"
+version = "0.1.4"
 description = ""
 authors = ["Dumitru Dan Smaranda <dan.smaranda@uni.lu>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.12"
+python = ">=3.10,<3.12"
 # TODO: Check in with shap for their next maintanance release
 # numpy = "<1.24.0"
 numpy = "^1.24.0"

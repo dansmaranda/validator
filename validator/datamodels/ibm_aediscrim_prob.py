@@ -7,7 +7,7 @@ from validator.plotting.plotting import MisterPlotter
 
 
 def plot_rho_histograms(
-    radius_quantiles: list[float], distance_distributions: np.ndarray, rho_dataloader, plot_dir: Path
+    radius_quantiles: list[float], distance_distributions: np.ndarray, rho_dataloader: Dataloader, plot_dir: Path
 ):
     nb_plots = len(radius_quantiles) + 1
 
